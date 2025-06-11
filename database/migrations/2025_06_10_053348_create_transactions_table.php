@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->enum('discount_type', ['fix', 'percent'])->nullable();
             $table->float('discount')->default(0);
             $table->decimal('total', 12, 2);;
             $table->date('date')->default(now());

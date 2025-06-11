@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'dicount',
+        'discount_type',
+        'discount',
         'total',
         'date',
     ];

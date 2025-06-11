@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasSku;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasSku;
     protected $fillable = [
         'name',
+        'sku',
         'price',
         'stock',
         'unit_id',

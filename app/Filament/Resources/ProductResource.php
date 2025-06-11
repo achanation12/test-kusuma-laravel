@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -22,11 +23,12 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
+    protected static ?string $navigationLabel = 'Produk';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
                 TextInput::make('name')
                     ->label('Nama Produk')
                     ->required()
@@ -62,6 +64,16 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                ViewColumn::make('qr_code')
+                    ->label('QR Code')
+                    ->alignCenter()
+                    ->view('filament.tables.columns.qrcode'),
+
+                TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('name')
                     ->label('Nama Produk')
                     ->searchable()
@@ -82,16 +94,22 @@ class ProductResource extends Resource
                 TextColumn::make('category.name')
                     ->label('Kategori')
                     ->searchable(),
-
-                TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime()
-                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('lihat_qr')
+                    ->label('Lihat QR')
+                    ->icon('heroicon-o-qr-code')
+                    ->modalHeading('QR Code Produk')
+                    ->modalWidth('sm')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->modalContent(function ($record) {
+                        $qrContent = "{$record->sku}|{$record->name}|{$record->price}|{$record->stock}";
+                        return view('filament.qr-modal', compact('qrContent'));
+                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

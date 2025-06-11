@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
                 'stock' => rand(10, 100),
                 'unit_id' => $unitIds[$p['unit']],
                 'category_id' => $categoryIds[$p['category']],
+                'sku' => strtoupper(substr($p['category'], 0, 3)).'-'.strtoupper(substr($p['name'], 0, 2)).'-'.str_pad(rand(10,99) + 1, 4, '0', STR_PAD_LEFT)
             ]);
         }
     }

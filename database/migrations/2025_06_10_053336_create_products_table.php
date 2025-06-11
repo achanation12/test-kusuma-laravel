@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('sku')->unique(); // ← Field SKU
             $table->integer('price');
             $table->unsignedInteger('stock')->default(0);
             $table->foreignId('unit_id')->constrained()->onDelete('cascade');

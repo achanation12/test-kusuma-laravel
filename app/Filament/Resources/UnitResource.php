@@ -22,6 +22,8 @@ class UnitResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
+    protected static ?string $navigationLabel = 'Satuan';
+
     public static function form(Form $form): Form
     {
         return $form

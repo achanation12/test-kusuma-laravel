@@ -29,15 +29,7 @@ class TransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    public static function afterCreate($record): void
-    {
-        foreach ($record->items as $item) {
-            $product = $item->product;
-            if ($product) {
-                $product->decrement('stock', $item->quantity);
-            }
-        }
-    }
+    protected static ?string $navigationLabel = 'Transaksi';
 
     public static function form(Form $form): Form
     {
@@ -109,7 +101,12 @@ class TransactionResource extends Resource
                             ->prefix('Rp')
                             ->disabled()
                             ->numeric()
-                            ->dehydrated(),
+                            ->dehydrated()
+                            ->afterStateHydrated(function (callable $set, $state, $record) {
+                                if ($record?->product) {
+                                    $set('price', $record->product->price);
+                                }
+                            }),
 
                         TextInput::make('quantity')
                             ->numeric()
